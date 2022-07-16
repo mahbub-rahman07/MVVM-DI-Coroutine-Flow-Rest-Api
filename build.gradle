@@ -2,12 +2,6 @@
 buildscript {
 
     ext {
-        versionCode = 1
-        versionName = '1.0'
-
-        compileSdkVersion = 32
-        minSdkVersion = 23
-        targetSdkVersion = 33
 
         kotlin_version = '1.7.10'
         hilt_version = '2.42'
