@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
+import com.mahbub.bs23.R
 import com.mahbub.bs23.databinding.FragmentDetailsBinding
 import com.mahbub.bs23.model.Item
 import com.mahbub.bs23.utils.Extensions.loadImage
@@ -50,7 +51,7 @@ class DetailsFragment : Fragment() {
     private fun setView(details: Item) {
         Log.d("DETAILS", "setView: $details")
 
-        binding.imageView.loadImage(details.owner.avatar_url)
+        binding.imageView.loadImage(details.owner.avatar_url, R.drawable.placeholder )
         binding.nameTv.text = details.full_name
         binding.descTv.text = details.description
         binding.lastUpdatedTv.text = Utils.getDateTime(details.updated_at)
