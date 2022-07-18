@@ -1,5 +1,7 @@
 package com.tenminuteschool.bs23.di
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.tenminuteschool.bs23.repo.ApiService
 import dagger.Module
 import dagger.Provides
@@ -16,6 +18,11 @@ object ApplicationModule {
     @Singleton
     fun providesApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun providesGson(): Gson {
+        return GsonBuilder().create()
     }
 
 }

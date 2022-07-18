@@ -1,4 +1,4 @@
-package com.tenminuteschool.bs23.view
+package com.tenminuteschool.bs23.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

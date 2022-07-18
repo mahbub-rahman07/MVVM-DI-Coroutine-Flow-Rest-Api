@@ -8,6 +8,7 @@ buildscript {
         coroutineVersion = "1.6.1"
         okHttpVersion = "4.9.3"
         retrofitVersion = "2.9.0"
+        coilImageLibraryVersion= "2.0.0-rc02"
 
     }
 
