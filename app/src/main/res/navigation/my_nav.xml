@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.tenminuteschool.bs23.view.fragment.ListFragment"
+        android:name="com.mahbub.bs23.view.fragment.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.tenminuteschool.bs23.view.fragment.DetailsFragment"
+        android:name="com.mahbub.bs23.view.fragment.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
         <action
