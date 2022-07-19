@@ -11,7 +11,7 @@ import javax.inject.Singleton
 const val TAG = "REPO"
 
 @Singleton
-class Repository @Inject constructor(private val service: ApiService) {
+class Repository @Inject constructor(private val service: ApiService, private val cacheDB: CacheDB) {
     private val jobs: ArrayList<CompletableJob> = arrayListOf()
 
 
@@ -25,17 +25,23 @@ class Repository @Inject constructor(private val service: ApiService) {
             "per_page" to "50",
             "sort" to "stargazers_count"
         )
+        val cache = cacheDB.getItems()
+        if(cache.isNotEmpty()) {
+            observer.postValue(ResponseHandler.Success(cache))
+        }
 
         val job: CompletableJob = Job()
         jobs.add(job)
 
         val handler = CoroutineExceptionHandler { _, exception ->
             Timber.tag(TAG).e(exception)
-            observer.postValue(
-                ResponseHandler.Error(
-                    msg = exception.message ?: "Unknown error!"
+            if(cache.isEmpty()) {
+                observer.postValue(
+                    ResponseHandler.Error(
+                        msg = exception.message ?: "Unknown error!"
+                    )
                 )
-            )
+            }
         }
 
         CoroutineScope(Dispatchers.IO + job + handler).launch {
@@ -46,9 +52,13 @@ class Repository @Inject constructor(private val service: ApiService) {
                 response.body().let {
                     if (it != null) {
                         observer.postValue(ResponseHandler.Success(it.items))
+
+                        cacheDB.saveItems(it.items)
+
                         Timber.tag(TAG).d("Success: item count -> ${it.items.size}")
                     }else {
                         observer.postValue(ResponseHandler.Error("No data found!"))
+
                         Timber.tag(TAG).d("Empty: no repository found")
                     }
                 }

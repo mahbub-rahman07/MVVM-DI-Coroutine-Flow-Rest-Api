@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id "io.objectbox"
 }
 
 android {
@@ -74,4 +75,8 @@ dependencies {
 
 //  Image viewer
     implementation "io.coil-kt:coil:$coilImageLibraryVersion"
+
+//    db
+    implementation "io.objectbox:objectbox-android:$objectboxVersion"
+    implementation "io.objectbox:objectbox-kotlin:$objectboxVersion"
 }
