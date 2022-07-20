@@ -25,6 +25,8 @@ class Repository @Inject constructor(private val service: ApiService, private va
             "per_page" to "50",
             "sort" to "stargazers_count"
         )
+
+//      Fetching data from cache first  then continue api call
         val cache = cacheDB.getItems()
         if(cache.isNotEmpty()) {
             observer.postValue(ResponseHandler.Success(cache))
@@ -35,6 +37,7 @@ class Repository @Inject constructor(private val service: ApiService, private va
 
         val handler = CoroutineExceptionHandler { _, exception ->
             Timber.tag(TAG).e(exception)
+//            if already has in cache do not need to show exception error
             if(cache.isEmpty()) {
                 observer.postValue(
                     ResponseHandler.Error(
@@ -51,8 +54,11 @@ class Repository @Inject constructor(private val service: ApiService, private va
 
                 response.body().let {
                     if (it != null) {
-                        observer.postValue(ResponseHandler.Success(it.items))
-
+//                      using single source of truth view will update only if cache is empty
+                        if(cache.isEmpty()) {
+                            observer.postValue(ResponseHandler.Success(it.items))
+                        }
+//                      save the response for offline use
                         cacheDB.saveItems(it.items)
 
                         Timber.tag(TAG).d("Success: item count -> ${it.items.size}")

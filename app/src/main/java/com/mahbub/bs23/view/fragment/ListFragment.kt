@@ -5,13 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.mahbub.bs23.R
 import com.mahbub.bs23.databinding.FragmentListBinding
 import com.mahbub.bs23.model.Item
+import com.mahbub.bs23.utils.ITEM_DETAILS
 import com.mahbub.bs23.utils.ResponseHandler
 import com.mahbub.bs23.view.adapter.ListAdapter
 import com.mahbub.bs23.viewmodel.MainViewModel
@@ -32,7 +38,6 @@ class ListFragment : Fragment() {
     @Inject
     lateinit var gson: Gson
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,8 +57,8 @@ class ListFragment : Fragment() {
         listAdapter.onItemClick = {
             Timber.tag("ITEM_CLICK").d("items: $it")
 
-            val bundle = bundleOf("details" to gson.toJson(it).toString())
-            view?.findNavController()?.navigate(R.id.to_detailsFragment, bundle)
+            val bundle = bundleOf(ITEM_DETAILS to gson.toJson(it).toString())
+            findNavController().navigate(R.id.to_detailsFragment, bundle)
         }
 
 
@@ -91,4 +96,5 @@ class ListFragment : Fragment() {
     private fun setItemList(data: List<Item>) {
         listAdapter.setData(data)
     }
+
 }

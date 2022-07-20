@@ -11,6 +11,7 @@ import com.mahbub.bs23.R
 import com.mahbub.bs23.databinding.FragmentDetailsBinding
 import com.mahbub.bs23.model.Item
 import com.mahbub.bs23.utils.Extensions.loadImage
+import com.mahbub.bs23.utils.ITEM_DETAILS
 import com.mahbub.bs23.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,7 +42,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun initComponent() {
-       val jsonString = arguments?.getString("details")
+       val jsonString = arguments?.getString(ITEM_DETAILS)
        val details =  gson.fromJson(jsonString, Item::class.java)
 
         setView(details)
@@ -52,7 +53,7 @@ class DetailsFragment : Fragment() {
         Log.d("DETAILS", "setView: $details")
 
         binding.imageView.loadImage(details.owner.avatar_url, R.drawable.placeholder )
-        binding.nameTv.text = details.full_name
+        binding.nameTv.text = details.full_name // could not find owner name field
         binding.descTv.text = details.description
         binding.lastUpdatedTv.text = Utils.getDateTime(details.updated_at)
 
