@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mahbub.bs23.model.Item
 import com.mahbub.bs23.repo.Repository
+import com.mahbub.bs23.repo.TAG
 import com.mahbub.bs23.utils.ResponseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -36,8 +38,10 @@ class MainViewModel @Inject constructor(
               .catch {
                   emit(ResponseHandler.Error("${it.localizedMessage}"))
               }
+              .flowOn(Dispatchers.IO)
               .collectLatest {
               _repoFlow.emit(it )
+                  Timber.tag("FLOW_").d("ViewModel:  ${Thread.currentThread().name}")
           }
        }
         Timber.tag("MAIN_VM").d("NETWORK CALL DONE")

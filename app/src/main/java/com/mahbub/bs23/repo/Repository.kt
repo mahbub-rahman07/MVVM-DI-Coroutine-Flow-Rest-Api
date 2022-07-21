@@ -100,7 +100,7 @@ class Repository @Inject constructor(
         if (cache.isNotEmpty()) {
             emit(ResponseHandler.Success(cache))
         }
-
+        Timber.tag("FLOW_").d("getTop50Repositories:  ${Thread.currentThread().name}")
         val response = service.getTop50Result(query)
         if (response.isSuccessful) {
 
@@ -113,7 +113,7 @@ class Repository @Inject constructor(
 //                  save the response for offline use
                     cacheDB.saveItems(it.items)
 
-                    Timber.tag(TAG).d("Success: item count -> ${it.items.size}")
+                    Timber.tag("FLOW_").d("Success: item count -> ${it.items.size} ${Thread.currentThread().name}")
                 } else {
                     emit(ResponseHandler.Error("No data found!"))
                     Timber.tag(TAG).d("Empty: no repository data found")
