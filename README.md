@@ -1,9 +1,23 @@
-# BS23 
+# Rest Api example using **MVVM**, Github Api, DI, Offline Database, Coroutine
 
-**In this project used**
+## Architecture
 ```
 > MVVM architecture
 > Repository Pattern
-> Database for offline using Objectbox
-> DI usging HILT
+> Database for offline caching 
+> Dependncy Injection 
+
+```
+## Compnent
+```
+> Navigation Component 
+> View Model
+> Hilt 
+> ObjectBox 
+> LiveData 
+> Coroutine 
+> Flow & Shared Flow 
+> Retrofit, OkHttp, Gson Converter
+> Coil 
+
 ```
