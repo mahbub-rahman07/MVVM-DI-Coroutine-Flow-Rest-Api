@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,6 +23,9 @@ import com.mahbub.bs23.utils.ResponseHandler
 import com.mahbub.bs23.view.adapter.ListAdapter
 import com.mahbub.bs23.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -65,7 +69,8 @@ class ListFragment : Fragment() {
     }
 
     private fun initFunctionality() {
-        viewModel.getTop50Repositories()
+//        viewModel.getTop50Repositories()
+        viewModel.getTop50RepositoriesFlow()
 
     }
 
@@ -87,9 +92,34 @@ class ListFragment : Fragment() {
                 is ResponseHandler.Error -> {
 
                 }
-                else -> {}
+                else -> Unit
             }
         }
+
+        lifecycleScope.launch{
+            viewModel.stateFlow
+                .collectLatest {
+                when (it) {
+                    is ResponseHandler.Loading -> {
+
+                    }
+                    is ResponseHandler.Success -> {
+
+                        Timber.tag("MAIN_VIEW").d("items: ${it.data?.size}")
+
+                        if (it.data != null) {
+                            setItemList(it.data)
+                        }
+
+                    }
+                    is ResponseHandler.Error -> {
+                        Timber.tag("MAIN_VIEW").d("Error: ${it.msg}")
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
 
     }
 
