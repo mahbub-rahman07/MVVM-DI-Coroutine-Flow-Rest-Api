@@ -10,7 +10,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.mahbub.bs23"
+        applicationId "com.mahbub.rest_mvvm"
         minSdk 23
         targetSdk 31
         versionCode 1

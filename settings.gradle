@@ -6,5 +6,5 @@ dependencyResolutionManagement {
         maven { url "https://jitpack.io" }
     }
 }
-rootProject.name = "BS23"
+rootProject.name = "Rest MVVM"
 include ':app'
