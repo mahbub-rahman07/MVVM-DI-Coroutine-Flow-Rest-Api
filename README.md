@@ -8,7 +8,7 @@
 > Dependncy Injection 
 
 ```
-## Compnent
+## Component
 ```
 > Navigation Component 
 > View Model
