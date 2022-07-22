@@ -29,9 +29,9 @@ class MainViewModel @Inject constructor(
         Timber.tag("MAIN_VM").d("NETWORK CALL DONE")
     }
 
-// ============ SHared Flow  Example <===================
-    private val _repoFlow:MutableStateFlow<ResponseHandler<List<Item>>> = MutableStateFlow(ResponseHandler.Empty())
-    val stateFlow: StateFlow<ResponseHandler<List<Item>>> = _repoFlow.asStateFlow()
+// ============ Shared Flow  Example <===================
+    private val _repoFlow = MutableSharedFlow<ResponseHandler<List<Item>>>()
+    val stateFlow = _repoFlow.asSharedFlow()
     fun getTop50RepositoriesFlow() {
        viewModelScope.launch{
           repo.getTop50Repositories()
