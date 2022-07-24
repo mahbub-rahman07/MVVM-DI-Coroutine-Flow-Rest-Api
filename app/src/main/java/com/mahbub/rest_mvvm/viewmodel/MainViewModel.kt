@@ -1,9 +1,6 @@
 package com.mahbub.rest_mvvm.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.mahbub.rest_mvvm.model.Item
 import com.mahbub.rest_mvvm.repo.Repository
 import com.mahbub.rest_mvvm.utils.ResponseHandler
@@ -45,6 +42,15 @@ class MainViewModel @Inject constructor(
        }
         Timber.tag("MAIN_VM").d("NETWORK CALL DONE")
     }
+
+//    ========> using shared view model concept passing value through flow <========
+    private val _itemDetails = MutableLiveData<Item>()
+    val itemDetails = _itemDetails.asFlow()
+
+    fun setCurrentItem(item: Item) {
+        _itemDetails.postValue(item)
+    }
+
 
 
     override fun onCleared() {

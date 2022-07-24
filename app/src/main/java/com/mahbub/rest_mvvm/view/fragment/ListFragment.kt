@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,7 +30,7 @@ class ListFragment : Fragment() {
 
     private lateinit var binding: FragmentListBinding
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     @Inject
     lateinit var listAdapter: ListAdapter
@@ -55,8 +56,11 @@ class ListFragment : Fragment() {
         listAdapter.onItemClick = {
             Timber.tag("ITEM_CLICK").d("items: $it")
 
-            val bundle = bundleOf(ITEM_DETAILS to gson.toJson(it).toString())
-            findNavController().navigate(R.id.to_detailsFragment, bundle)
+           // val bundle = bundleOf(ITEM_DETAILS to gson.toJson(it).toString())
+
+//          instead of passing value we will set the item in view model
+            viewModel.setCurrentItem(it)
+            findNavController().navigate(R.id.to_detailsFragment)
         }
 
 
@@ -90,7 +94,7 @@ class ListFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch{
+        lifecycleScope.launchWhenStarted{
             viewModel.stateFlow
                 .collectLatest {
                 when (it) {
