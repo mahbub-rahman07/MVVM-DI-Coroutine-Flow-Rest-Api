@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.mahbub.rest_mvvm.R
 import com.mahbub.rest_mvvm.databinding.FragmentDetailsBinding
@@ -40,6 +42,10 @@ class DetailsFragment : Fragment() {
        // initComponent()
         initFunctionality()
         initObserver()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            findNavController().navigateUp()
+        }
 
         return binding.root
     }

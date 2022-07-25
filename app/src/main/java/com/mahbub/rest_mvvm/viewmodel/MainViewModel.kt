@@ -14,43 +14,38 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     val repo: Repository
-): ViewModel() {
+) : ViewModel() {
 
-// ============ LIVE DATA Example <===================
-    private val _repositoriesMutableLiveData: MutableLiveData<ResponseHandler<List<Item>>> =  MutableLiveData()
-    val observer: LiveData<ResponseHandler<List<Item>>> = _repositoriesMutableLiveData
+    // ============ State Flow  Example with lazy initialization <===================
+    private val _repoFlow: MutableStateFlow<ResponseHandler<List<Item>>> by lazy {
+        getTop50Repositories()
+        return@lazy MutableStateFlow<ResponseHandler<List<Item>>>(ResponseHandler.Empty())
 
-    fun getTop50Repositories() {
-        repo.getTop50Repositories(_repositoriesMutableLiveData)
+    }
+    val stateFlow = _repoFlow.asStateFlow()
+
+    private fun getTop50Repositories() {
+        viewModelScope.launch {
+            repo.getTop50Repositories()
+                .catch {
+                    emit(ResponseHandler.Error("${it.localizedMessage}"))
+                }
+                .flowOn(Dispatchers.IO)
+                .collectLatest {
+                    _repoFlow.emit(it)
+                    Timber.tag("FLOW_").d("ViewModel:  ${Thread.currentThread().name}")
+                }
+        }
         Timber.tag("MAIN_VM").d("NETWORK CALL DONE")
     }
 
-// ============ Shared Flow  Example <===================
-    private val _repoFlow = MutableSharedFlow<ResponseHandler<List<Item>>>()
-    val stateFlow = _repoFlow.asSharedFlow()
-    fun getTop50RepositoriesFlow() {
-       viewModelScope.launch{
-          repo.getTop50Repositories()
-              .catch {
-                  emit(ResponseHandler.Error("${it.localizedMessage}"))
-              }
-              .flowOn(Dispatchers.IO)
-              .collectLatest {
-              _repoFlow.emit(it )
-                  Timber.tag("FLOW_").d("ViewModel:  ${Thread.currentThread().name}")
-          }
-       }
-        Timber.tag("MAIN_VM").d("NETWORK CALL DONE")
-    }
-
-//    ========> using shared view model concept passing value through flow <========
+    //========> using shared view model concept passing value through flow <========
     private val _itemDetails = MutableLiveData<Item>()
     val itemDetails = _itemDetails.asFlow()
 
     fun setCurrentItem(item: Item) {
         _itemDetails.postValue(item)
     }
-
 
 
     override fun onCleared() {

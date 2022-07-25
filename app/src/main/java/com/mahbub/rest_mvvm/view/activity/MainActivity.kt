@@ -2,6 +2,9 @@ package com.mahbub.rest_mvvm.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import com.mahbub.rest_mvvm.R
 import com.mahbub.rest_mvvm.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+//    override fun onSupportNavigateUp(): Boolean {
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        return navController.navigateUp() || super.onSupportNavigateUp()
+//    }
 
 
 
