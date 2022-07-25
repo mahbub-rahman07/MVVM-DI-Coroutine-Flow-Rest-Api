@@ -16,7 +16,8 @@
 > ObjectBox 
 > LiveData 
 > Coroutine 
-> Flow & Shared Flow 
+> Flow & State Flow 
+> Shared ViewModel 
 > Retrofit, OkHttp, Gson Converter
 > Coil 
 
